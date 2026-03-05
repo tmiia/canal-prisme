@@ -13,33 +13,35 @@ export default class Experience {
     if (Experience.instance) return Experience.instance;
     Experience.instance = this;
 
-    // Global access
     window.experience = this;
 
     this.routerReplace = routerReplace;
     this.canvas = canvas;
-
-    // Setup
 
     this.debug = new Debug();
     this.sizes = new Sizes();
     this.time = new Time();
     this.resources = new Resources(sources, this.data);
 
+    this.flexGroups = new Set();
+
     this.camera = new Camera();
     this.sceneManager = new SceneManager(this);
     this.sceneManager.setScene(DefaultScene);
-    console.log(this.sceneManager);
     this.renderer = new Renderer();
 
-    // Shared props
     this.isGalleryAnimated = true;
 
-    // Resize
     this.sizes.on("resize", () => this.resize());
-
-    // Tick
     this.time.on("tick", () => this.update());
+  }
+
+  registerFlexGroup(group) {
+    this.flexGroups.add(group);
+  }
+
+  unregisterFlexGroup(group) {
+    this.flexGroups.delete(group);
   }
 
   navigateToPage(path) {
@@ -56,6 +58,7 @@ export default class Experience {
   resize() {
     this.camera.resize();
     this.renderer.resize();
+    this.flexGroups.forEach((group) => group.update());
   }
 
   update() {
@@ -72,8 +75,9 @@ export default class Experience {
       this.sceneManager.currentScene.destroy();
     }
 
-    if (this.camera.controls) this.camera.controls.dispose();
     if (this.renderer.instance) this.renderer.instance.dispose();
+
+    this.flexGroups.clear();
 
     if (this.debug.active) this.debug.ui.destroy();
   }
