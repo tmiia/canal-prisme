@@ -16,8 +16,8 @@ export default class Renderer {
       canvas: this.canvas,
       antialias: true,
     });
-    this.instance.toneMapping = THREE.CineonToneMapping;
-    this.instance.toneMappingExposure = 1.75;
+    this.instance.outputColorSpace = THREE.SRGBColorSpace;
+    this.instance.toneMapping = THREE.NoToneMapping;
     this.instance.shadowMap.enabled = true;
     this.instance.shadowMap.type = THREE.PCFSoftShadowMap;
     this.instance.setClearColor("#FFFFFF");

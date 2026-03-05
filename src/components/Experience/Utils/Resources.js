@@ -34,6 +34,7 @@ export default class Resources extends EventEmitter {
         });
       } else if (source.type === "texture") {
         this.loaders.textureLoader.load(source.path, (texture) => {
+          texture.colorSpace = THREE.SRGBColorSpace;
           this.sourceLoaded(source, texture);
         });
       } else if (source.type === "cubeTexture") {
