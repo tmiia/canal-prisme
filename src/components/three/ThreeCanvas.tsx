@@ -50,7 +50,7 @@ const ThreeJSExperience = () => {
         style={{
           width: "100%",
           height: "100vh",
-          position: "relative",
+          position: "fixed",
         }}
       >
         <canvas ref={canvasRef} className="sticky top-0 left-0" />

@@ -1,47 +1,43 @@
 import { PlaneGeometry, Mesh, MeshBasicMaterial } from "three";
-import Experience from "../../../Experience";
 
 export default class Plane {
-  constructor({ width = 100, height = 100, color = "#ffffff", texture = null } = {}) {
-    this.experience = new Experience();
-    this.scene = this.experience.sceneManager.currentScene.scene;
-
+  constructor({
+    width = 100,
+    height = 100,
+    color = "#ffffff",
+    texture = null,
+    parentScene = null,
+  } = {}) {
+    this.parentScene = parentScene;
     this.width = width;
     this.height = height;
 
-    this.setGeometry();
-    this.setMaterial(color, texture);
-    this.setMesh();
-  }
+    const opts = {
+      transparent: true,
+      opacity: 1,
+      depthWrite: false,
+    };
 
-  setGeometry() {
-    this.geometry = new PlaneGeometry(this.width, this.height);
-  }
-
-  setMaterial(color, texture) {
-    const opts = {};
     if (texture) {
       opts.map = texture;
     } else {
       opts.color = color;
     }
+
+    this.geometry = new PlaneGeometry(this.width, this.height);
     this.material = new MeshBasicMaterial(opts);
-  }
-
-  setMesh() {
     this.mesh = new Mesh(this.geometry, this.material);
-    this.scene.add(this.mesh);
-  }
 
-  update() {
-    if (this.mesh) {
-      this.mesh.rotation.z += 0.005;
+    if (this.parentScene) {
+      this.parentScene.add(this.mesh);
     }
   }
 
   destroy() {
     if (this.geometry) this.geometry.dispose();
     if (this.material) this.material.dispose();
-    if (this.mesh) this.scene.remove(this.mesh);
+    if (this.mesh && this.parentScene) {
+      this.parentScene.remove(this.mesh);
+    }
   }
 }

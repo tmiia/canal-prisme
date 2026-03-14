@@ -5,60 +5,48 @@ export default class Camera {
   constructor() {
     this.experience = new Experience();
     this.sizes = this.experience.sizes;
-    this.canvas = this.experience.canvas;
 
     this.setInstance();
   }
 
   setInstance() {
-    const halfW = this.sizes.width / 2;
-    const halfH = this.sizes.height / 2;
-
-    this.instance = new THREE.OrthographicCamera(
-      -halfW, halfW,
-      halfH, -halfH,
-      0.1, 2000
+    this.instance = new THREE.PerspectiveCamera(
+      150,
+      this.sizes.width / this.sizes.height,
+      1,
+      2000,
     );
-    this.instance.position.set(0, 0, 1000);
+    this.instance.position.set(0, 0, 600);
     this.instance.lookAt(0, 0, 0);
   }
 
-  /** 1 world unit = 1 CSS pixel (identity mapping) */
-  toWorld(px) {
-    return px;
-  }
-
-  toPixels(units) {
-    return units;
-  }
-
   /**
-   * Maps a DOM element's bounding rect into Three.js world coordinates.
-   * Returns { x, y, width, height } where (x, y) is the element's center.
+   * Returns visible world dimensions at a given z plane for the current camera.
    */
-  getWorldPosition(domElement) {
-    const rect = domElement.getBoundingClientRect();
-    const vw = this.sizes.width;
-    const vh = this.sizes.height;
-
-    return {
-      x: -vw / 2 + rect.left + rect.width / 2,
-      y: vh / 2 - rect.top - rect.height / 2,
-      width: rect.width,
-      height: rect.height,
-    };
+  getVisibleSize(z = 0) {
+    const distance = Math.abs(this.instance.position.z - z);
+    const fovRad = (this.instance.fov * Math.PI) / 180;
+    const height = 2 * distance * Math.tan(fovRad / 2);
+    const width = height * this.instance.aspect;
+    return { width, height };
   }
 
   resize() {
-    const halfW = this.sizes.width / 2;
-    const halfH = this.sizes.height / 2;
-
-    this.instance.left = -halfW;
-    this.instance.right = halfW;
-    this.instance.top = halfH;
-    this.instance.bottom = -halfH;
+    this.instance.aspect = this.sizes.width / this.sizes.height;
     this.instance.updateProjectionMatrix();
   }
 
-  update() {}
+  update() {
+    const key = this.experience.sceneManager?.currentSceneKey;
+
+    let targetZ = this.instance.position.z;
+    if (key === "default") {
+      targetZ = 100;
+    } else if (key === "list") {
+      targetZ = 400;
+    }
+
+    this.instance.position.z += (targetZ - this.instance.position.z) * 0.05;
+    this.instance.lookAt(0, 0, 0);
+  }
 }

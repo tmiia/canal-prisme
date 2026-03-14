@@ -60,10 +60,11 @@ export default class FlexGroup {
     return { ...this._cachedSize };
   }
 
-  update({ animate = false, duration = 0.8, ease = "power2.inOut" } = {}) {
+  update({ animate = false, duration = 0.8, ease = "power2.inOut", stagger = 0 } = {}) {
     this._animating = animate;
     this._animDuration = duration;
     this._animEase = ease;
+    this._animStagger = stagger;
 
     if (this.children.length === 0) {
       this._cachedSize = { width: 0, height: 0 };
@@ -85,6 +86,7 @@ export default class FlexGroup {
     let crossOffset = 0;
     let totalMainSize = 0;
     let totalCrossSize = 0;
+    let itemIndex = 0;
 
     for (const line of lines) {
       const mainSizes = line.map((e) => (isRow ? e.width : e.height));
@@ -109,8 +111,10 @@ export default class FlexGroup {
           entry,
           mainPos,
           crossOffset + crossPos,
-          isRow
+          isRow,
+          itemIndex
         );
+        itemIndex++;
       }
 
       const lineMainSize =
@@ -267,7 +271,7 @@ export default class FlexGroup {
    * Positions are converted from a top-left layout space into Three.js
    * centered-origin space using the group's anchor.
    */
-  _applyPosition(entry, mainPos, crossPos, isRow) {
+  _applyPosition(entry, mainPos, crossPos, isRow, itemIndex = 0) {
     let x, y;
 
     if (isRow) {
@@ -288,11 +292,28 @@ export default class FlexGroup {
       gsap.to(entry.child.position, {
         x, y, z,
         duration: this._animDuration,
+        delay: Math.random() * itemIndex * this._animStagger,
         ease: this._animEase,
         overwrite: true,
       });
     } else {
       entry.child.position.set(x, y, z);
+    }
+  }
+
+  fadeIn({ duration = 1.2, stagger = 0.05, ease = "power2.out" } = {}) {
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i].child;
+      if (child.material) {
+        child.material.opacity = 0;
+        gsap.to(child.material, {
+          opacity: 1,
+          duration,
+          delay: i * stagger,
+          ease,
+          overwrite: true,
+        });
+      }
     }
   }
 

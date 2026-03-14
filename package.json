@@ -12,6 +12,7 @@
     "@tailwindcss/postcss": "latest",
     "@types/three": "latest",
     "gsap": "^3.14.2",
+    "lenis": "^1.3.18",
     "lil-gui": "latest",
     "next": "latest",
     "postprocessing": "latest",

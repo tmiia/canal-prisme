@@ -1,7 +1,6 @@
 import Camera from "./Camera";
 import Renderer from "./Renderer";
 import SceneManager from "./Scenes/SceneManager.js";
-import DefaultScene from "./Scenes/Default/DefaultScene.js";
 import sources from "./sources.js";
 import Debug from "./Utils/Debug.js";
 import Resources from "./Utils/Resources.js";
@@ -27,10 +26,7 @@ export default class Experience {
 
     this.camera = new Camera();
     this.sceneManager = new SceneManager(this);
-    this.sceneManager.setScene(DefaultScene);
     this.renderer = new Renderer();
-
-    this.isGalleryAnimated = true;
 
     this.sizes.on("resize", () => this.resize());
     this.time.on("tick", () => this.update());
@@ -64,16 +60,16 @@ export default class Experience {
   update() {
     this.sceneManager.update();
     this.camera.update();
-    this.renderer.update(this.sceneManager.currentScene.scene);
+    if (this.sceneManager.currentScene) {
+      this.renderer.update(this.sceneManager.currentScene.scene);
+    }
   }
 
   destroy() {
     this.sizes.off("resize");
     this.time.off("tick");
 
-    if (this.sceneManager.currentScene) {
-      this.sceneManager.currentScene.destroy();
-    }
+    this.sceneManager.destroy();
 
     if (this.renderer.instance) this.renderer.instance.dispose();
 

@@ -4,10 +4,8 @@ import Experience from "./Experience";
 export default class Renderer {
   constructor() {
     this.experience = new Experience();
-    this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
     this.sizes = this.experience.sizes;
-    this.camera = this.experience.camera;
 
     this.setInstance();
   }
@@ -20,7 +18,7 @@ export default class Renderer {
     this.instance.toneMapping = THREE.NoToneMapping;
     this.instance.shadowMap.enabled = true;
     this.instance.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.instance.setClearColor("#FFFFFF");
+    this.instance.setClearColor("#101010");
     this.instance.setSize(this.sizes.width, this.sizes.height);
     this.instance.setPixelRatio(this.sizes.pixelRatio);
   }
@@ -30,9 +28,6 @@ export default class Renderer {
     this.instance.setPixelRatio(this.sizes.pixelRatio);
   }
 
-  // update() {
-  //   this.instance.render(this.scene, this.camera.instance);
-  // }
   update(scene) {
     this.instance.render(scene, this.experience.camera.instance);
   }
