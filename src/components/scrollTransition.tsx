@@ -33,7 +33,7 @@ const ScrollTransition = ({
       className="fixed bottom-10 left-[50%] -translate-x-[50%] pointer-events-none z-50"
       style={{ opacity: fadeOut }}
     >
-      <strong className="font-mono font-normal text-sm uppercase">
+      <strong className="font-canal-light-romain font-normal md:text-sm text-xs uppercase">
         {letters.map((ch, i) => {
           const lettersCount = letters.length;
           const start = (i / Math.max(1, lettersCount - 1)) * 0.8;

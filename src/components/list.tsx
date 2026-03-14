@@ -96,19 +96,19 @@ export default function List() {
         style={{ zIndex: 2 }}
       >
         <h2
-          className="text-sm font-normal font-geist-mono text-foreground transition-opacity duration-300"
+          className="text-sm font-normal font-canal-light-romain text-foreground transition-opacity duration-300"
           style={{
             opacity: activeTitle ? 1 : 0,
-            transform: "translateY(calc(-1 * var(--plane-half-vh, 15vh) - 0.2rem))",
+            transform: "translateY(calc(-1 * var(--plane-half-vh, 15vh) - 0.4rem))",
           }}
         >
           {activeTitle}
         </h2>
         <span
-          className="text-[10px] font-normal font-geist-mono text-foreground transition-opacity duration-300"
+          className="text-[10px] font-normal font-canal-light-romain text-foreground transition-opacity duration-300"
           style={{
             opacity: activeTitle ? 1 : 0,
-            transform: "translateY(calc(var(--plane-half-vh, 15vh) + 0.2rem))",
+            transform: "translateY(calc(var(--plane-half-vh, 15vh) + 0.4rem))",
           }}
         >
           {listData.findIndex((d) => d.title === activeTitle) + 1}
