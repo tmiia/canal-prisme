@@ -6,6 +6,8 @@ import FlexGroup from "../../Utils/FlexGroup.js";
 import listData from "../../../../data/listData.js";
 
 const LIST_CAMERA_Z = 400;
+const PARALLAX_STRENGTH = 0.05;
+const ZOOM_FACTOR = 1.09;
 
 export default class ListScene extends Scene {
   init() {
@@ -62,13 +64,41 @@ export default class ListScene extends Scene {
         height: planeH,
         texture,
         parentScene: this.scene,
+        zoomFactor: ZOOM_FACTOR,
       });
       this.flexGroup.add(plane.mesh);
       return plane;
     });
 
     this.flexGroup.update();
+    this._applyParallax();
     this._updateCSSVars();
+  }
+
+  _applyParallax() {
+    if (!this.flexGroup || this.planes.length === 0) return;
+
+    const isRow = this.flexGroup.direction === "row";
+    const scroll = isRow ? this.scrollX : this.scrollY;
+    const children = this.flexGroup.children;
+    const stride = isRow
+      ? (children[0]?.width || 0) + this.flexGroup.gap
+      : (children[0]?.height || 0) + this.flexGroup.gap;
+
+    if (stride === 0) return;
+
+    for (let i = 0; i < this.planes.length; i++) {
+      const uniforms = this.planes[i].material.uniforms;
+      if (!uniforms?.uParallaxOffset) continue;
+
+      const dist = (i * stride - scroll) / stride;
+
+      if (isRow) {
+        uniforms.uParallaxOffset.value.set(dist * PARALLAX_STRENGTH, 0);
+      } else {
+        uniforms.uParallaxOffset.value.set(0, dist * PARALLAX_STRENGTH);
+      }
+    }
   }
 
   _updateCSSVars() {
@@ -126,6 +156,7 @@ export default class ListScene extends Scene {
     this.flexGroup.maxMainSize = this.worldH;
     this._recalcAnchor();
     this.flexGroup.update();
+    this._applyParallax();
     this._updateCSSVars();
   }
 
@@ -182,6 +213,7 @@ export default class ListScene extends Scene {
     }
     this._recalcAnchor();
     this.flexGroup.update();
+    this._applyParallax();
   }
 
   onEnter() {
