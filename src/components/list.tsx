@@ -126,7 +126,7 @@ export default function List() {
               sectionsRef.current[i] = el;
             }}
             data-id={item.id}
-            style={{ height: "var(--section-h, 38vh)" }}
+            style={{ height: "calc(var(--section-h, 38vh) + 0.45rem)" }}
           />
         ))}
       </div>
