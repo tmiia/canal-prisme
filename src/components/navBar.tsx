@@ -11,19 +11,19 @@ const NavBar = () => {
             </div>
 
             <ul className="flex items-center space-x-4">
-                <li className="font-medium">
+                <li className="font-medium hover:text-accent transition-colors duration-300">
                     <Link href="/" className="font-canal-demi-romain">Acceuil</Link>
                 </li>
-                <li className="font-medium font-canal-demi-romain">
+                <li className="font-medium font-canal-demi-romain hover:text-accent transition-colors duration-300">
                     <Link href="/">En direct</Link>
                 </li>
-                <li className="font-bol font-canal-demi-romain">
+                <li className="font-bol font-canal-demi-romain hover:text-accent transition-colors duration-300">
                     <Link href="/">Programme TV</Link>
                 </li>
-                <li className="font-medium font-canal-demi-romain">
+                <li className="font-medium font-canal-demi-romain hover:text-accent transition-colors duration-300">
                     <Link href="/">Chaînes & Apps</Link>
                 </li>
-                <li className="font-medium font-canal-demi-romain">
+                <li className="font-medium font-canal-demi-romain hover:text-accent transition-colors duration-300">
                     <Link href="/">Mes vidéos</Link>
                 </li>
             </ul>
