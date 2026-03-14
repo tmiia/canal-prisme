@@ -51,6 +51,10 @@ export default class SceneManager {
     this.currentScene = nextScene;
     this.currentSceneKey = key;
 
+    window.dispatchEvent(
+      new CustomEvent("scenechange", { detail: { scene: key } })
+    );
+
     if (typeof nextScene.onEnter === "function") {
       nextScene.onEnter();
     }

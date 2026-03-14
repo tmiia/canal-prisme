@@ -11,6 +11,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-canal-bold-italic: var(--font-canal-bold-italic);
+  --font-canal-demi-romain: var(--font-canal-demi-romain);
+  --font-canal-light-italic: var(--font-canal-light-italic);
+  --font-canal-light-romain: var(--font-canal-light-romain);
 }
 
 
