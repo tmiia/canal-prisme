@@ -3,6 +3,7 @@ import Renderer from "./Renderer";
 import SceneManager from "./Scenes/SceneManager.js";
 import sources from "./sources.js";
 import Debug from "./Utils/Debug.js";
+import Interaction from "./Utils/Interaction.js";
 import Resources from "./Utils/Resources.js";
 import Sizes from "./Utils/Sizes.js";
 import Time from "./Utils/Time.js";
@@ -27,6 +28,7 @@ export default class Experience {
     this.camera = new Camera();
     this.sceneManager = new SceneManager(this);
     this.renderer = new Renderer();
+    this.interaction = new Interaction();
 
     this.sizes.on("resize", () => this.resize());
     this.time.on("tick", () => this.update());
@@ -71,6 +73,7 @@ export default class Experience {
 
     this.sceneManager.destroy();
 
+    if (this.interaction) this.interaction.destroy();
     if (this.renderer.instance) this.renderer.instance.dispose();
 
     this.flexGroups.clear();

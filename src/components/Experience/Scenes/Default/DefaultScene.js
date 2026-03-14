@@ -59,6 +59,9 @@ export default class DefaultScene extends Scene {
       layer.group.position.z = layer.zDepth;
       return layer;
     });
+
+    const allMeshes = this.layers.flatMap((layer) => layer.getMeshes());
+    this.experience.interaction.register("default", allMeshes);
   }
 
   setScrollOffset(sectionOffset, totalSectionHeight) {
@@ -84,6 +87,7 @@ export default class DefaultScene extends Scene {
   }
 
   destroy() {
+    this.experience.interaction.unregister("default");
     for (const layer of this.layers) {
       layer.dispose();
       this.scene.remove(layer.group);

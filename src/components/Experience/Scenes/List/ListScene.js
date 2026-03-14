@@ -66,6 +66,7 @@ export default class ListScene extends Scene {
         parentScene: this.scene,
         zoomFactor: ZOOM_FACTOR,
       });
+      plane.mesh.userData.title = item.title;
       this.flexGroup.add(plane.mesh);
       return plane;
     });
@@ -73,6 +74,11 @@ export default class ListScene extends Scene {
     this.flexGroup.update();
     this._applyParallax();
     this._updateCSSVars();
+
+    this.experience.interaction.register(
+      "list",
+      this.planes.map((p) => p.mesh),
+    );
   }
 
   _applyParallax() {
@@ -226,6 +232,7 @@ export default class ListScene extends Scene {
 
   destroy() {
     super.destroy();
+    this.experience.interaction.unregister("list");
     this.experience.sizes.off("resize.listScene");
 
     for (const plane of this.planes) {

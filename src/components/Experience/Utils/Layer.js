@@ -71,12 +71,18 @@ export default class Layer {
     const proximity = smoothstep(proximityRaw);
 
     for (const { mesh, baseW, baseH } of this.images) {
+      if (mesh.userData.focused || mesh.userData.hovered) continue;
+
       const scaleMult = lerp(MIN_SCALE, MAX_SCALE, proximity);
       mesh.scale.set(baseW * scaleMult, baseH * scaleMult, 1);
 
       mesh.material.opacity = lerp(MIN_OPACITY, MAX_OPACITY, proximity);
       mesh.material.depthWrite = false;
     }
+  }
+
+  getMeshes() {
+    return this.images.map((img) => img.mesh);
   }
 
   dispose() {

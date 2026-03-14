@@ -288,6 +288,8 @@ export default class FlexGroup {
       entry.child.anchor = { x: x - entry.width / 2, y: y + entry.height / 2 };
       entry.child.zIndex = z;
       entry.child.update();
+    } else if (entry.child.userData?.focused) {
+      return;
     } else if (this._animating) {
       gsap.to(entry.child.position, {
         x, y, z,

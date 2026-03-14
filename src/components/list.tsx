@@ -5,6 +5,8 @@ import listData from "@/data/listData";
 
 export default function List() {
   const [activeTitle, setActiveTitle] = useState<string | null>(null);
+  const [focusedTitle, setFocusedTitle] = useState<string | null>(null);
+  const [activeHalfVh, setActiveHalfVh] = useState<number | null>(null);
   const [direction, setDirection] = useState<"column" | "row">("column");
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
   const sentinelRef = useRef<HTMLElement | null>(null);
@@ -87,6 +89,26 @@ export default function List() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const onFocus = (e: CustomEvent<{ title: string | null; sceneKey: string; activeHalfVh: number }>) => {
+      if (e.detail.sceneKey === "list") {
+        setFocusedTitle(e.detail.title);
+        setActiveHalfVh(e.detail.activeHalfVh);
+      }
+    };
+    const onUnfocus = () => {
+      setFocusedTitle(null);
+      setActiveHalfVh(null);
+    };
+
+    window.addEventListener("planefocus", onFocus as EventListener);
+    window.addEventListener("planeunfocus", onUnfocus);
+    return () => {
+      window.removeEventListener("planefocus", onFocus as EventListener);
+      window.removeEventListener("planeunfocus", onUnfocus);
+    };
+  }, []);
+
   const isRow = direction === "row";
 
   return (
@@ -95,24 +117,34 @@ export default function List() {
         className="fixed inset-0 pointer-events-none flex flex-col items-center justify-center space-x-2.5 pr-2.5"
         style={{ zIndex: 2 }}
       >
-        <h2
-          className="text-sm font-normal font-canal-light-romain text-foreground transition-opacity duration-300"
-          style={{
-            opacity: activeTitle ? 1 : 0,
-            transform: "translateY(calc(-1 * var(--plane-half-vh, 15vh) - 0.4rem))",
-          }}
-        >
-          {activeTitle}
-        </h2>
-        <span
-          className="text-[10px] font-normal font-canal-light-romain text-foreground transition-opacity duration-300"
-          style={{
-            opacity: activeTitle ? 1 : 0,
-            transform: "translateY(calc(var(--plane-half-vh, 15vh) + 0.4rem))",
-          }}
-        >
-          {listData.findIndex((d) => d.title === activeTitle) + 1}
-        </span>
+        {(() => {
+          const displayTitle = focusedTitle ?? activeTitle;
+          const halfVh = activeHalfVh != null
+            ? `${activeHalfVh}vh`
+            : "var(--plane-half-vh, 15vh)";
+          return (
+            <>
+              <h2
+                className="text-sm font-normal font-canal-light-romain text-foreground transition-all duration-300"
+                style={{
+                  opacity: displayTitle ? 1 : 0,
+                  transform: `translateY(calc(-1 * ${halfVh} - 0.4rem))`,
+                }}
+              >
+                {displayTitle}
+              </h2>
+              <span
+                className="text-[10px] font-normal font-canal-light-romain text-foreground transition-all duration-300"
+                style={{
+                  opacity: displayTitle ? 1 : 0,
+                  transform: `translateY(calc(${halfVh} + 0.4rem))`,
+                }}
+              >
+                {listData.findIndex((d) => d.title === displayTitle) + 1}
+              </span>
+            </>
+          );
+        })()}
       </div>
 
       <div
