@@ -12,7 +12,7 @@ const NavBar = () => {
 
             <ul className="hidden md:flex items-center space-x-4">
                 <li className="font-medium hover:text-accent transition-colors duration-300">
-                    <Link href="/" className="font-canal-demi-romain">Acceuil</Link>
+                    <Link href="/" className="font-canal-demi-romain">Accueil</Link>
                 </li>
                 <li className="font-medium font-canal-demi-romain hover:text-accent transition-colors duration-300">
                     <Link href="/">En direct</Link>

@@ -2,7 +2,7 @@ const talksTexturesData = [
   {
     id: 1,
     image: "/textures/talks/LEA.png",
-    title: "LEA",
+    title: "Lea Esmaili",
     description: "",
     authorName: "",
     originalUrl: "",
@@ -10,7 +10,7 @@ const talksTexturesData = [
   {
     id: 2,
     image: "/textures/talks/LEONARD.png",
-    title: "LEONARD",
+    title: "Leonard Mariotte",
     description: "",
     authorName: "",
     originalUrl: "",
@@ -18,7 +18,7 @@ const talksTexturesData = [
   {
     id: 3,
     image: "/textures/talks/SAMY.png",
-    title: "SAMY",
+    title: "Samy Lacrapule",
     description: "",
     authorName: "",
     originalUrl: "",

@@ -133,23 +133,23 @@ export default function DefaultOverlay() {
           top: `calc(50% + ${halfVh} + 8px)`,
         }}
       >
-        <p className="text-sm font-canal-light-romain text-foreground whitespace-nowrap">
-          {artData.title}
+        <h3 className="text-sm font-canal-light-romain text-foreground whitespace-nowrap">
+          <span className="uppercase">{artData.title}</span>
           {hasAuthor && (
             <>
               {" "}
               by{" "}
-              <span className="font-canal-demi-romain font-semibold">
+              <strong className="font-canal-demi-romain font-semibold">
                 {artData.authorName}
-              </span>
+              </strong>
             </>
           )}
-        </p>
+        </h3>
         <p className="text-xs font-canal-light-romain text-foreground/60 mt-0.5">
           {fakeDuration(artData.id ?? 1)}
         </p>
         {hasDescription && (
-          <p className="text-xs font-canal-light-romain text-foreground/80 mt-1 max-w-md">
+          <p className="text-xs font-canal-light-italic text-foreground/70 max-w-md">
             {artData.description}
           </p>
         )}

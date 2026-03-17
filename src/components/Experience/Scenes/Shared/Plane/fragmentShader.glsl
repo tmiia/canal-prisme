@@ -19,4 +19,5 @@ void main() {
     uv += uParallaxOffset;
     vec4 tex = texture2D(uTexture, uv);
     gl_FragColor = vec4(tex.rgb, tex.a * uOpacity);
+    #include <colorspace_fragment>
 }
