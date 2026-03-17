@@ -126,10 +126,18 @@ export default function List() {
 
   return (
     <>
+
+      <h2 className="fixed top-42 left-8 text-3xl font-bold font-canal-bold-italic text-foreground"
+      style={{ 
+        zIndex: 0,
+        opacity: activeTitle ? 1 : 0,
+       }}
+      >+ <br /> <strong className="font-canal-light-romain font-normal text-lg">Discover more about the artists</strong></h2>
       <div
         className="fixed inset-0 pointer-events-none flex flex-col items-center justify-center space-x-2.5 pr-2.5"
         style={{ zIndex: 2 }}
       >
+
         {(() => {
           const displayTitle = focusedTitle ?? activeTitle;
           const halfVh = activeHalfVh != null
