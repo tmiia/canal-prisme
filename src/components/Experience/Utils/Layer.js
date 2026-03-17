@@ -25,6 +25,7 @@ export default class Layer {
     this.cellPositions = options.cellPositions || [];
     this.maxWidth = options.maxWidth || 250;
 
+    this.entranceOffset = 0;
     this.images = [];
     this.group = new THREE.Group();
   }
@@ -62,7 +63,7 @@ export default class Layer {
   updateWithScroll(scrollDepth) {
     if (this.images.length === 0) return;
 
-    const effectiveZ = this.zDepth + scrollDepth;
+    const effectiveZ = this.zDepth + this.entranceOffset + scrollDepth;
     this.group.position.z = effectiveZ;
 
     const cameraZ = this.camera.instance.position.z;
@@ -79,6 +80,12 @@ export default class Layer {
 
       mesh.material.opacity = lerp(MIN_OPACITY, MAX_OPACITY, proximity);
       mesh.material.depthWrite = false;
+    }
+  }
+
+  setInitialOpacity(opacity) {
+    for (const { mesh } of this.images) {
+      mesh.material.opacity = opacity;
     }
   }
 

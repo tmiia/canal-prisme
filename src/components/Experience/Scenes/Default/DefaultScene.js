@@ -1,3 +1,4 @@
+import gsap from "gsap";
 import Scene from "../Scene.js";
 import Environement from "./Environment.js";
 import Layer from "../../Utils/Layer.js";
@@ -7,6 +8,7 @@ import { lerp, clamp } from "../../Utils/math.js";
 
 const MOBILE_BREAKPOINT = 768;
 const Z_STEP = -100;
+const ENTRANCE_OFFSET = -400;
 
 function getResponsiveConfig(viewportWidth) {
   if (viewportWidth < MOBILE_BREAKPOINT) {
@@ -67,15 +69,50 @@ export default class DefaultScene extends Scene {
         layer.add(texture, item);
       });
 
+      layer.entranceOffset = ENTRANCE_OFFSET;
+      layer.setInitialOpacity(0);
+
       this.scene.add(layer.group);
-      layer.group.position.z = layer.zDepth;
+      layer.group.position.z = layer.zDepth + ENTRANCE_OFFSET;
       return layer;
     });
 
-    this._entranceTimer = setTimeout(() => {
-      const allMeshes = this.layers.flatMap((layer) => layer.getMeshes());
-      this.experience.interaction.register("default", allMeshes);
-    }, 5000);
+    this._playEntrance();
+  }
+
+  _playEntrance() {
+    this._entranceTl = gsap.timeline({
+      delay: 0.8,
+      onComplete: () => {
+        const allMeshes = this.layers.flatMap((layer) => layer.getMeshes());
+        this.experience.interaction.register("default", allMeshes);
+      },
+    });
+
+    this.layers.forEach((layer, i) => {
+      const staggerDelay = i * 0.15;
+
+      this._entranceTl.to(
+        layer,
+        {
+          entranceOffset: 0,
+          duration: 1.5,
+          ease: "power2.out",
+        },
+        staggerDelay,
+      );
+
+      const meshTargets = layer.images.map((img) => img.mesh.material);
+      this._entranceTl.to(
+        meshTargets,
+        {
+          opacity: 1,
+          duration: 1.2,
+          ease: "power2.out",
+        },
+        staggerDelay,
+      );
+    });
   }
 
   setScrollOffset(sectionOffset, totalSectionHeight) {
@@ -101,7 +138,10 @@ export default class DefaultScene extends Scene {
   }
 
   destroy() {
-    clearTimeout(this._entranceTimer);
+    if (this._entranceTl) {
+      this._entranceTl.kill();
+      this._entranceTl = null;
+    }
     this.experience.interaction.unregister("default");
     for (const layer of this.layers) {
       layer.dispose();
