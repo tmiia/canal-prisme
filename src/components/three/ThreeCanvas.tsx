@@ -15,6 +15,8 @@ const ThreeJSExperience = () => {
   const canvasRef = useRef(null);
   const router = useRouter();
   const [currentScene, setCurrentScene] = useState("default");
+  const [loading, setLoading] = useState(true);
+  const [showLoader, setShowLoader] = useState(true);
 
   const routerReplace = useCallback(
     (path: string) => {
@@ -34,6 +36,12 @@ const ThreeJSExperience = () => {
         onSceneChange as EventListener
       );
     };
+  }, []);
+
+  useEffect(() => {
+    const onLoaded = () => setLoading(false);
+    window.addEventListener("resourcesloaded", onLoaded);
+    return () => window.removeEventListener("resourcesloaded", onLoaded);
   }, []);
 
   useEffect(() => {
@@ -60,6 +68,16 @@ const ThreeJSExperience = () => {
 
   return (
     <>
+      {showLoader && (
+        <div
+          className={`loader-overlay${loading ? "" : " fade-out"}`}
+          onTransitionEnd={() => {
+            if (!loading) setShowLoader(false);
+          }}
+        >
+          <div className="loader-spinner" />
+        </div>
+      )}
       <div
         className="fixed inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700"
         style={{

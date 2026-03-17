@@ -72,8 +72,10 @@ export default class DefaultScene extends Scene {
       return layer;
     });
 
-    const allMeshes = this.layers.flatMap((layer) => layer.getMeshes());
-    this.experience.interaction.register("default", allMeshes);
+    this._entranceTimer = setTimeout(() => {
+      const allMeshes = this.layers.flatMap((layer) => layer.getMeshes());
+      this.experience.interaction.register("default", allMeshes);
+    }, 5000);
   }
 
   setScrollOffset(sectionOffset, totalSectionHeight) {
@@ -99,6 +101,7 @@ export default class DefaultScene extends Scene {
   }
 
   destroy() {
+    clearTimeout(this._entranceTimer);
     this.experience.interaction.unregister("default");
     for (const layer of this.layers) {
       layer.dispose();

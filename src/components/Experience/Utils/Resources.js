@@ -49,6 +49,7 @@ export default class Resources extends EventEmitter {
     this.loaded++;
     if (this.loaded === this.toLoad) {
       this.trigger("loaded");
+      window.dispatchEvent(new CustomEvent("resourcesloaded"));
     }
   }
 }
