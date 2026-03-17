@@ -2,7 +2,7 @@ import Scene from "../Scene.js";
 import Environement from "./Environment.js";
 import Layer from "../../Utils/Layer.js";
 import GridPlacement from "../../Utils/placement.js";
-import listData from "../../../../data/listData.js";
+import artTexturesData from "../../../../data/artTexturesData.js";
 import { lerp, clamp } from "../../Utils/math.js";
 
 const MOBILE_BREAKPOINT = 768;
@@ -48,8 +48,8 @@ export default class DefaultScene extends Scene {
     const occupiedCells = new Set();
 
     const chunks = [];
-    for (let i = 0; i < listData.length; i += config.imagesPerLayer) {
-      chunks.push(listData.slice(i, i + config.imagesPerLayer));
+    for (let i = 0; i < artTexturesData.length; i += config.imagesPerLayer) {
+      chunks.push(artTexturesData.slice(i, i + config.imagesPerLayer));
     }
 
     this.layers = chunks.map((chunk, layerIndex) => {
@@ -63,8 +63,8 @@ export default class DefaultScene extends Scene {
       });
 
       chunk.forEach((item) => {
-        const texture = this.resources.items[`galleryTexture${item.id}`];
-        layer.add(texture);
+        const texture = this.resources.items[`artTexture${item.id}`];
+        layer.add(texture, item);
       });
 
       this.scene.add(layer.group);

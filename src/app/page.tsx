@@ -1,4 +1,5 @@
 import Layer from "@/components/layers";
+import DefaultOverlay from "@/components/defaultOverlay";
 import List from "@/components/list";
 import ScrollTransition from "@/components/scrollTransition";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -10,6 +11,7 @@ export default function Home() {
       <SmoothScroll>
         <ThreeJSExperience />
         <Layer />
+        <DefaultOverlay />
         <ScrollTransition />
         <List />
       </SmoothScroll>

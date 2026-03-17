@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import listData from "@/data/listData";
+import artTexturesData from "@/data/artTexturesData";
 
 const MOBILE_BREAKPOINT = 768;
 
@@ -16,7 +16,7 @@ const Layer = () => {
   const ticking = useRef(false);
 
   useEffect(() => {
-    setNbSection(Math.ceil(listData.length / getImagesPerLayer()));
+    setNbSection(Math.ceil(artTexturesData.length / getImagesPerLayer()));
   }, []);
 
   useEffect(() => {

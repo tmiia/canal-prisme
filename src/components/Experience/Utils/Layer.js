@@ -29,7 +29,7 @@ export default class Layer {
     this.group = new THREE.Group();
   }
 
-  add(texture) {
+  add(texture, data = {}) {
     if (this.images.length >= MAX_IMAGES) return;
 
     const index = this.images.length;
@@ -51,6 +51,7 @@ export default class Layer {
 
     mesh.position.set(pos.x, pos.y, 0);
     mesh.scale.set(baseW, baseH, 1);
+    Object.assign(mesh.userData, data);
 
     this.group.add(mesh);
     this.images.push({ mesh, texture, baseW, baseH });

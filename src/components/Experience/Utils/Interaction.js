@@ -6,7 +6,7 @@ const HOVER_SCALE = 1.07;
 const HOVER_DURATION = 0.3;
 const FOCUS_DURATION = 0.8;
 const UNFOCUS_DURATION = 0.6;
-const FILL_RATIO = 0.65;
+const FILL_RATIO = 0.45;
 
 export default class Interaction {
   constructor() {
@@ -236,7 +236,9 @@ export default class Interaction {
     const cam = this.camera.instance;
     const fovRad = (cam.fov * Math.PI) / 180;
     const visH = 2 * (cam.position.z - targetZ) * Math.tan(fovRad / 2);
+    const visW = visH * cam.aspect;
     const activeHalfVh = (height / visH) * 50;
+    const activeHalfVw = (width / visW) * 50;
 
     window.dispatchEvent(
       new CustomEvent("planefocus", {
@@ -244,6 +246,8 @@ export default class Interaction {
           title: mesh.userData.title ?? null,
           sceneKey: this.sceneManager.currentSceneKey,
           activeHalfVh,
+          activeHalfVw,
+          artData: { ...mesh.userData },
         },
       }),
     );
