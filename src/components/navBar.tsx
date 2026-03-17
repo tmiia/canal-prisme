@@ -4,20 +4,20 @@ import LoopIcon from "./icons/loopIcon";
 
 const NavBar = () => {
   return (
-    <div className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-2">
-        <nav className="flex items-center space-x-6">
+    <div className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 md:px-8 py-2">
+        <nav className="flex items-center space-x-4 md:space-x-6">
             <div className="my-2">
                 <Image src="/logos/Logo_CANAL_Plus_Dark_Mode.svg" alt="Canal+ Logo" width={100} height={100} />
             </div>
 
-            <ul className="flex items-center space-x-4">
+            <ul className="hidden md:flex items-center space-x-4">
                 <li className="font-medium hover:text-accent transition-colors duration-300">
                     <Link href="/" className="font-canal-demi-romain">Acceuil</Link>
                 </li>
                 <li className="font-medium font-canal-demi-romain hover:text-accent transition-colors duration-300">
                     <Link href="/">En direct</Link>
                 </li>
-                <li className="font-bol font-canal-demi-romain hover:text-accent transition-colors duration-300">
+                <li className="font-bold font-canal-demi-romain hover:text-accent transition-colors duration-300">
                     <Link href="/">Programme TV</Link>
                 </li>
                 <li className="font-medium font-canal-demi-romain hover:text-accent transition-colors duration-300">
@@ -29,7 +29,7 @@ const NavBar = () => {
             </ul>
         </nav>
 
-        <menu className="flex items-center space-x-4">
+        <menu className="hidden md:flex items-center space-x-4">
             <button type="button">
                 <LoopIcon />
             </button>
@@ -38,6 +38,16 @@ const NavBar = () => {
                 <Image src="/avatars/avatar_canal.webp" alt="Profil" width={32} height={32} />
             </button>
         </menu>
+
+        <button
+          type="button"
+          className="md:hidden flex flex-col justify-center gap-[5px] p-1"
+          aria-label="Menu"
+        >
+            <span className="block w-5 h-[2px] bg-foreground rounded-full" />
+            <span className="block w-5 h-[2px] bg-foreground rounded-full" />
+            <span className="block w-5 h-[2px] bg-foreground rounded-full" />
+        </button>
     </div>
   );
 };

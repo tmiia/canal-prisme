@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import listData from "@/data/listData";
 
-const IMAGES_PER_LAYER = 4;
+const MOBILE_BREAKPOINT = 768;
+
+function getImagesPerLayer() {
+  if (typeof window === "undefined") return 4;
+  return window.innerWidth < MOBILE_BREAKPOINT ? 2 : 4;
+}
 
 const Layer = () => {
   const [nbSection, setNbSection] = useState(0);
@@ -11,7 +16,7 @@ const Layer = () => {
   const ticking = useRef(false);
 
   useEffect(() => {
-    setNbSection(Math.ceil(listData.length / IMAGES_PER_LAYER));
+    setNbSection(Math.ceil(listData.length / getImagesPerLayer()));
   }, []);
 
   useEffect(() => {

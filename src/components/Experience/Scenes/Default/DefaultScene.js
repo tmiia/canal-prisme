@@ -5,8 +5,15 @@ import GridPlacement from "../../Utils/placement.js";
 import listData from "../../../../data/listData.js";
 import { lerp, clamp } from "../../Utils/math.js";
 
-const IMAGES_PER_LAYER = 4;
+const MOBILE_BREAKPOINT = 768;
 const Z_STEP = -100;
+
+function getResponsiveConfig(viewportWidth) {
+  if (viewportWidth < MOBILE_BREAKPOINT) {
+    return { imagesPerLayer: 2, cols: 3, rows: 3, maxWidth: 180 };
+  }
+  return { imagesPerLayer: 4, cols: 6, rows: 4, maxWidth: 250 };
+}
 
 export default class DefaultScene extends Scene {
   init() {
@@ -32,12 +39,17 @@ export default class DefaultScene extends Scene {
       height: this.experience.sizes.height,
     };
 
-    const grid = new GridPlacement(viewport);
+    const config = getResponsiveConfig(viewport.width);
+
+    const grid = new GridPlacement(viewport, {
+      cols: config.cols,
+      rows: config.rows,
+    });
     const occupiedCells = new Set();
 
     const chunks = [];
-    for (let i = 0; i < listData.length; i += IMAGES_PER_LAYER) {
-      chunks.push(listData.slice(i, i + IMAGES_PER_LAYER));
+    for (let i = 0; i < listData.length; i += config.imagesPerLayer) {
+      chunks.push(listData.slice(i, i + config.imagesPerLayer));
     }
 
     this.layers = chunks.map((chunk, layerIndex) => {
@@ -47,7 +59,7 @@ export default class DefaultScene extends Scene {
       const layer = new Layer({
         zDepth: layerIndex * Z_STEP,
         cellPositions,
-        maxWidth: 250,
+        maxWidth: config.maxWidth,
       });
 
       chunk.forEach((item) => {
