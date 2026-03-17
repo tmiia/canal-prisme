@@ -35,8 +35,11 @@ const canalLightRomain = LocalFont({
 });
 
 export const metadata: Metadata = {
-  title: 'producer-website',
-  description: "Generated with nextjs-starter CLI by miiadev",
+  title: 'Canal+1 | D&AD Newblood',
+  description: "CANAL+1 is streaming’s new lab shaping the future of storytelling. Directors, photographers, musicians and designers get free rein to extend CANAL+ Originals through their own lens.",
+  icons: {
+    icon: '/favicon-32x32.png',
+  },
 };
 
 export default function RootLayout({
