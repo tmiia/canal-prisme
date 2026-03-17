@@ -22,12 +22,16 @@ export default class Plane {
     this.height = height;
 
     if (texture) {
+      const texAspect =
+        texture.image ? texture.image.width / texture.image.height : 1;
       this.material = new ShaderMaterial({
         uniforms: {
           uTexture: { value: texture },
           uOpacity: { value: 1.0 },
           uParallaxOffset: { value: new Vector2(0, 0) },
           uZoomFactor: { value: zoomFactor },
+          uPlaneAspect: { value: width / height },
+          uTextureAspect: { value: texAspect },
         },
         vertexShader,
         fragmentShader,

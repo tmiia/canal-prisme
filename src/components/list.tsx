@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import listData from "@/data/listData";
+import talksTexturesData from "@/data/talksTexturesData";
 
 export default function List() {
   const [activeTitle, setActiveTitle] = useState<string | null>(null);
@@ -54,10 +54,10 @@ export default function List() {
               ? sections[1].offsetTop - sections[0].offsetTop
               : firstSection.offsetHeight;
           const activeIdx = Math.min(
-            listData.length - 1,
+            talksTexturesData.length - 1,
             Math.max(0, Math.round(relativeOffset / stride)),
           );
-          setActiveTitle(listData[activeIdx].title);
+          setActiveTitle(talksTexturesData[activeIdx].title);
         }
       } else {
         setActiveTitle(null);
@@ -101,11 +101,24 @@ export default function List() {
       setActiveHalfVh(null);
     };
 
+    const onHover = (e: CustomEvent<{ sceneKey: string; activeHalfVh: number }>) => {
+      if (e.detail.sceneKey === "list") {
+        setActiveHalfVh(e.detail.activeHalfVh);
+      }
+    };
+    const onHoverLeave = () => {
+      setActiveHalfVh(null);
+    };
+
     window.addEventListener("planefocus", onFocus as EventListener);
     window.addEventListener("planeunfocus", onUnfocus);
+    window.addEventListener("planehover", onHover as EventListener);
+    window.addEventListener("planehoverleave", onHoverLeave);
     return () => {
       window.removeEventListener("planefocus", onFocus as EventListener);
       window.removeEventListener("planeunfocus", onUnfocus);
+      window.removeEventListener("planehover", onHover as EventListener);
+      window.removeEventListener("planehoverleave", onHoverLeave);
     };
   }, []);
 
@@ -128,7 +141,7 @@ export default function List() {
                 className="text-sm font-normal font-canal-light-romain text-foreground transition-all duration-300"
                 style={{
                   opacity: displayTitle ? 1 : 0,
-                  transform: `translateY(calc(-1 * ${halfVh} - 0.4rem))`,
+                  transform: `translateY(calc(-1 * ${halfVh} - 0.75rem))`,
                 }}
               >
                 {displayTitle}
@@ -137,10 +150,10 @@ export default function List() {
                 className="text-[10px] font-normal font-canal-light-romain text-foreground transition-all duration-300"
                 style={{
                   opacity: displayTitle ? 1 : 0,
-                  transform: `translateY(calc(${halfVh} + 0.4rem))`,
+                  transform: `translateY(calc(${halfVh} + 0.75rem))`,
                 }}
               >
-                {listData.findIndex((d) => d.title === displayTitle) + 1}
+                {talksTexturesData.findIndex((d) => d.title === displayTitle) + 1}
               </span>
             </>
           );
@@ -151,7 +164,7 @@ export default function List() {
         className="relative flex flex-col space-y-2.5"
         style={{ zIndex: 0 }}
       >
-        {listData.map((item, i) => (
+        {talksTexturesData.map((item, i) => (
           <section
             key={item.id}
             ref={(el) => {
@@ -161,6 +174,12 @@ export default function List() {
             style={{ height: "calc(var(--section-h, 38vh) + 0.45rem)" }}
           />
         ))}
+        <section
+          ref={(el) => {
+            sentinelRef.current = el;
+          }}
+          style={{ height: "25vh" }}
+        />
       </div>
     </>
   );

@@ -128,6 +128,25 @@ export default class Interaction {
       ease: "power2.out",
       overwrite: true,
     });
+
+    const { height } = this._getPlaneWorldSize(mesh);
+    const hoveredHeight = height * HOVER_SCALE;
+    const cam = this.camera.instance;
+    const fovRad = (cam.fov * Math.PI) / 180;
+    const worldPos = new THREE.Vector3();
+    mesh.getWorldPosition(worldPos);
+    const visH = 2 * (cam.position.z - worldPos.z) * Math.tan(fovRad / 2);
+    const activeHalfVh = (hoveredHeight / visH) * 50;
+
+    window.dispatchEvent(
+      new CustomEvent("planehover", {
+        detail: {
+          title: mesh.userData.title ?? null,
+          sceneKey: this.sceneManager.currentSceneKey,
+          activeHalfVh,
+        },
+      }),
+    );
   }
 
   _onHoverLeave(mesh) {
@@ -146,6 +165,8 @@ export default class Interaction {
         delete mesh.userData._preHoverScaleY;
       },
     });
+
+    window.dispatchEvent(new CustomEvent("planehoverleave"));
   }
 
   _clearHover(mesh) {

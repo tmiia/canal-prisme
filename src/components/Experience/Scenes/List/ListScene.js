@@ -3,7 +3,7 @@ import gsap from "gsap";
 import Scene from "../Scene.js";
 import Plane from "../Shared/Plane/Plane.js";
 import FlexGroup from "../../Utils/FlexGroup.js";
-import listData from "../../../../data/listData.js";
+import talksTexturesData from "../../../../data/talksTexturesData.js";
 
 const LIST_CAMERA_Z = 400;
 const PARALLAX_STRENGTH = 0.05;
@@ -57,8 +57,8 @@ export default class ListScene extends Scene {
       maxMainSize: this.worldH,
     });
 
-    this.planes = listData.map((item) => {
-      const texture = this.resources.items[`galleryTexture${item.id}`];
+    this.planes = talksTexturesData.map((item) => {
+      const texture = this.resources.items[`talksTexture${item.id}`];
       const plane = new Plane({
         width: planeW,
         height: planeH,
@@ -153,6 +153,10 @@ export default class ListScene extends Scene {
       plane.geometry.dispose();
       plane.geometry = new PlaneGeometry(planeW, planeH);
       plane.mesh.geometry = plane.geometry;
+
+      if (plane.material.uniforms?.uPlaneAspect) {
+        plane.material.uniforms.uPlaneAspect.value = planeW / planeH;
+      }
 
       this.flexGroup.children[i].width = planeW;
       this.flexGroup.children[i].height = planeH;
