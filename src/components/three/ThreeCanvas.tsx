@@ -68,10 +68,10 @@ const ThreeJSExperience = () => {
         }}
       >
         <Image
-          src="/logos/prisme_logo.png"
+          src="/logos/prisme_logo.svg"
           alt="Prisme logo"
-          width={400}
-          height={400}
+          width={200}
+          height={200}
           priority
           className="object-contain"
         />
