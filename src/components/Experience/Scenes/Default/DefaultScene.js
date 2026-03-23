@@ -25,6 +25,7 @@ export default class DefaultScene extends Scene {
     this.normalizedScroll = 0;
     this.scrollDepth = 0;
     this.scrollDepthTarget = 0;
+    this._fadeMultiplier = 1;
 
     if (this.resources.toLoad === this.resources.loaded) {
       this.onResourcesLoaded();
@@ -115,6 +116,19 @@ export default class DefaultScene extends Scene {
     });
   }
 
+  onEnter() {
+    this.scrollDepth = this.scrollDepthTarget;
+    if (this.layers.length > 0) {
+      this._fadeMultiplier = 0;
+      gsap.to(this, {
+        _fadeMultiplier: 1,
+        duration: 0.35,
+        ease: "power2.out",
+        overwrite: true,
+      });
+    }
+  }
+
   setScrollOffset(sectionOffset, totalSectionHeight) {
     const normalized = clamp(
       sectionOffset / Math.max(totalSectionHeight, 1),
@@ -134,6 +148,15 @@ export default class DefaultScene extends Scene {
 
     for (const layer of this.layers) {
       layer.updateWithScroll(this.scrollDepth);
+    }
+
+    if (this._fadeMultiplier < 1) {
+      for (const layer of this.layers) {
+        for (const { mesh } of layer.images) {
+          if (mesh.userData.focused || mesh.userData.hovered) continue;
+          mesh.material.opacity *= this._fadeMultiplier;
+        }
+      }
     }
   }
 
