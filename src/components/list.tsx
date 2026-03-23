@@ -127,7 +127,7 @@ export default function List() {
   return (
     <>
 
-      <h2 className="fixed top-42 left-8 text-3xl font-bold font-canal-bold-italic text-foreground"
+      <h2 className="fixed top-32 left-8 text-3xl font-bold font-canal-bold-italic text-foreground"
       style={{ 
         zIndex: 0,
         opacity: activeTitle ? 1 : 0,
