@@ -17,19 +17,16 @@ const NavBar = () => {
 
             <ul className="hidden md:flex items-center space-x-4">
                 <li className={variants.inactive}>
-                    <Link href="/" className="font-canal-demi-romain">Accueil</Link>
+                    <Link href="https://www.canalplus.com/" className="font-canal-demi-romain">Accueil</Link>
                 </li>
                 <li className={variants.inactive}>
-                    <Link href="/">En direct</Link>
+                    <Link href="https://www.canalplus.com/live/">En direct</Link>
                 </li>
                 <li className={variants.inactive}>
-                    <Link href="/">Programme TV</Link>
+                    <Link href="https://www.canalplus.com/chaines/">Chaînes & Apps</Link>
                 </li>
                 <li className={variants.inactive}>
-                    <Link href="/">Chaînes & Apps</Link>
-                </li>
-                <li className={variants.inactive}>
-                    <Link href="/">Mes vidéos</Link>
+                    <Link href="https://www.canalplus.com/mes-videos/">Mes vidéos</Link>
                 </li>
                 <li className={variants.active}>
                     <Link href="/">Originals+1</Link>
