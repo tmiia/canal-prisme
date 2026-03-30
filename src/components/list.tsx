@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import talksTexturesData from "@/data/talksTexturesData";
+import PlayIcon from "@/components/icons/playIcon";
 
 export default function List() {
   const [activeTitle, setActiveTitle] = useState<string | null>(null);
@@ -154,6 +155,23 @@ export default function List() {
               >
                 {displayTitle}
               </h2>
+
+              <div
+                className="absolute rounded-full flex items-center justify-center transition-all duration-300"
+                style={{
+                  top: "50%",
+                  left: "50%",
+                  transform: `translate(-50%, -50%) scale(${focusedTitle ? 1 : 0.6})`,
+                  width: 56,
+                  height: 56,
+                  background: "rgba(0, 0, 0, 0.5)",
+                  backdropFilter: "blur(4px)",
+                  opacity: focusedTitle ? 1 : 0,
+                }}
+              >
+                <PlayIcon color="#fff" />
+              </div>
+
               <span
                 className="text-[10px] font-normal font-canal-light-romain text-foreground transition-all duration-300"
                 style={{

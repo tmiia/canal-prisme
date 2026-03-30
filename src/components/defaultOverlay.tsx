@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import PlayIcon from "@/components/icons/playIcon";
 
 interface ArtData {
   id?: number;
@@ -23,6 +24,7 @@ export default function DefaultOverlay() {
   const [visible, setVisible] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const playRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
@@ -63,10 +65,12 @@ export default function DefaultOverlay() {
     if (!textRef.current) return;
     const lines = textRef.current.children;
     const img = imageRef.current;
+    const play = playRef.current;
 
     if (visible) {
       gsap.set(lines, { opacity: 0, y: 12 });
       if (img) gsap.set(img, { clipPath: "inset(100% 0 0 0)" });
+      if (play) gsap.set(play, { opacity: 0, scale: 0.6 });
 
       tlRef.current = gsap.timeline({ delay: 0.65 });
       tlRef.current.to(lines, {
@@ -87,6 +91,18 @@ export default function DefaultOverlay() {
           0.1,
         );
       }
+      if (play) {
+        tlRef.current.to(
+          play,
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          },
+          0.15,
+        );
+      }
     } else {
       tlRef.current?.kill();
       gsap.to(lines, {
@@ -99,6 +115,14 @@ export default function DefaultOverlay() {
         gsap.to(img, {
           clipPath: "inset(100% 0 0 0)",
           duration: 0.3,
+          ease: "power2.in",
+        });
+      }
+      if (play) {
+        gsap.to(play, {
+          opacity: 0,
+          scale: 0.6,
+          duration: 0.25,
           ease: "power2.in",
         });
       }
@@ -125,6 +149,23 @@ export default function DefaultOverlay() {
       className="fixed inset-0 pointer-events-none"
       style={{ zIndex: 3 }}
     >
+      <div
+        ref={playRef}
+        className="absolute rounded-full flex items-center justify-center"
+        style={{
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 56,
+          height: 56,
+          background: "rgba(0, 0, 0, 0.5)",
+          backdropFilter: "blur(4px)",
+          opacity: 0,
+        }}
+      >
+        <PlayIcon color="#fff" />
+      </div>
+
       <div
         ref={textRef}
         className="absolute"
